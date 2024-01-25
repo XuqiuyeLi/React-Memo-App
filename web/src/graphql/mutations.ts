@@ -1,12 +1,10 @@
-/* tslint:disable */
-/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../API";
+import * as APITypes from '../API'
 type GeneratedMutation<InputType, OutputType> = string & {
-  __generatedMutationInput: InputType;
-  __generatedMutationOutput: OutputType;
-};
+  __generatedMutationInput: InputType
+  __generatedMutationOutput: OutputType
+}
 
 export const createNote = /* GraphQL */ `mutation CreateNote(
   $input: CreateNoteInput!
@@ -24,7 +22,7 @@ export const createNote = /* GraphQL */ `mutation CreateNote(
 ` as GeneratedMutation<
   APITypes.CreateNoteMutationVariables,
   APITypes.CreateNoteMutation
->;
+>
 export const updateNote = /* GraphQL */ `mutation UpdateNote(
   $input: UpdateNoteInput!
   $condition: ModelNoteConditionInput
@@ -41,7 +39,7 @@ export const updateNote = /* GraphQL */ `mutation UpdateNote(
 ` as GeneratedMutation<
   APITypes.UpdateNoteMutationVariables,
   APITypes.UpdateNoteMutation
->;
+>
 export const deleteNote = /* GraphQL */ `mutation DeleteNote(
   $input: DeleteNoteInput!
   $condition: ModelNoteConditionInput
@@ -58,4 +56,4 @@ export const deleteNote = /* GraphQL */ `mutation DeleteNote(
 ` as GeneratedMutation<
   APITypes.DeleteNoteMutationVariables,
   APITypes.DeleteNoteMutation
->;
+>
