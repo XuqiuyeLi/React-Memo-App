@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { type CreateNoteInput, Note } from '../API.ts'
 import { NoteRepository } from '../repository/NetworkNoteRepository.ts'
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface NoteListPageProps {
   noteRepo: NoteRepository
@@ -63,8 +65,10 @@ export default function NoteListPage({ noteRepo }: NoteListPageProps) {
       </form>
       {notes.map((note, index) => (
         <div key={note.id ? note.id : index}>
-          <p data-testid="note-title">{note.title}</p>
-          <p data-testid="note-content">{note.content}</p>
+          <div data-testid="note-title">{note.title}</div>
+          <div data-testid="note-content">
+            <Markdown remarkPlugins={[remarkGfm]}>{note.content}</Markdown>
+          </div>
         </div>
       ))}
     </div>
