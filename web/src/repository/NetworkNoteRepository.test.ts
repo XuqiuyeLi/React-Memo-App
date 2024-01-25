@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => {
   return {
     graphql: vi.fn(),
     createNote: vi.fn(),
+    deleteNote: vi.fn(),
   }
 })
 
@@ -20,6 +21,7 @@ vi.mock('../graphql/mutations.ts', async (importOriginal) => {
   return {
     ...mod,
     createNote: mocks.createNote,
+    deleteNote: mocks.deleteNote,
   }
 })
 
@@ -60,5 +62,17 @@ describe('NetworkNoteRepository', () => {
     const notes = await networkNoteRepo.getNotes()
 
     expect(notes).toStrictEqual(mockedNotes)
+  })
+
+  test('deleteNote will delete a note saved in aws amplify', async () => {
+    const mockedDeleteNoteInput = { id: '1' }
+    await networkNoteRepo.deleteNote(mockedDeleteNoteInput)
+
+    expect(mocks.graphql).toHaveBeenCalledWith({
+      query: mocks.deleteNote,
+      variables: {
+        input: mockedDeleteNoteInput,
+      },
+    })
   })
 })

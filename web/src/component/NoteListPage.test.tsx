@@ -1,11 +1,11 @@
 import '@testing-library/jest-dom'
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { expect, test } from 'vitest'
 import NoteListPage from './NoteListPage.tsx'
 import { userEvent } from '@testing-library/user-event'
-import SpyStubNoteRepo from '../repository/SpyStubNoteRepository.ts'
+import SpyStubNoteRepo from '../repository/SpyStubNoteRepo.ts'
 
-describe('App', () => {
+describe('NoteListPage', () => {
   let spyStubNoteRepo: SpyStubNoteRepo
 
   async function renderComponent(noteRepo: SpyStubNoteRepo) {
@@ -32,7 +32,7 @@ describe('App', () => {
 
     await userEvent.type(titleInput, 'Sunday Shopping List')
     await userEvent.type(contentTextbox, 'apples, beef, ice-cream')
-    fireEvent.click(button)
+    await userEvent.click(button)
 
     expect(spyStubNoteRepo.createNote_was_called).toBeTruthy()
     expect(spyStubNoteRepo.createNote_arg_note).toStrictEqual({
@@ -82,5 +82,35 @@ describe('App', () => {
     expect(noteContentElements[2]).toHaveTextContent(
       'Book flight ticket and buy clothes'
     )
+  })
+
+  test('when user clicks delete button on a note, repo will receive the correct note to be deleted', async () => {
+    spyStubNoteRepo.getNotes_return_value = [
+      {
+        __typename: 'Note',
+        id: '1',
+        title: 'Chinese New Year',
+        content: 'Book flight ticket and buy clothes',
+        createdAt: '',
+        updatedAt: '',
+      },
+      {
+        __typename: 'Note',
+        id: '2',
+        title: 'Tennis camp',
+        content: 'Decide a day and book hotel',
+        createdAt: '',
+        updatedAt: '',
+      },
+    ]
+    render(<NoteListPage noteRepo={spyStubNoteRepo} />)
+
+    const deleteButtons = await screen.findAllByRole('button', {
+      name: 'Delete',
+    })
+    await userEvent.click(deleteButtons[0])
+
+    expect(spyStubNoteRepo.deleteNote_was_called).toBeTruthy()
+    expect(spyStubNoteRepo.deleteNote_arg_note).toStrictEqual({ id: '1' })
   })
 })

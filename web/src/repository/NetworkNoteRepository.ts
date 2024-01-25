@@ -1,11 +1,12 @@
 import { generateClient } from 'aws-amplify/api'
-import { createNote } from '../graphql/mutations.ts'
-import { type CreateNoteInput, Note } from '../API.ts'
+import { createNote, deleteNote } from '../graphql/mutations.ts'
+import { type CreateNoteInput, DeleteNoteInput, Note } from '../API.ts'
 import { listNotes } from '../graphql/queries.ts'
 
 export interface NoteRepository {
   createNote(note: CreateNoteInput): Promise<void>
   getNotes(): Promise<Note[]>
+  deleteNote(note: DeleteNoteInput): Promise<void>
 }
 
 export default class NetworkNoteRepository implements NoteRepository {
@@ -23,5 +24,14 @@ export default class NetworkNoteRepository implements NoteRepository {
       query: listNotes,
     })
     return Promise.resolve(notesData.data.listNotes.items)
+  }
+
+  async deleteNote(note: DeleteNoteInput): Promise<void> {
+    await this.client.graphql({
+      query: deleteNote,
+      variables: {
+        input: note,
+      },
+    })
   }
 }

@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { type CreateNoteInput, Note } from '../API.ts'
 import { NoteRepository } from '../repository/NetworkNoteRepository.ts'
-import Markdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import { NoteCard } from './NoteCard.tsx'
 
 interface NoteListPageProps {
   noteRepo: NoteRepository
@@ -50,6 +49,13 @@ export default function NoteListPage({ noteRepo }: NoteListPageProps) {
     })
   }
 
+  async function onDeleteNote(note: Note) {
+    if (note.id) {
+      await noteRepo.deleteNote({ id: note.id })
+      await getAllNotes()
+    }
+  }
+
   return (
     <div className="main">
       <h1>MEMO</h1>
@@ -65,10 +71,7 @@ export default function NoteListPage({ noteRepo }: NoteListPageProps) {
       </form>
       {notes.map((note, index) => (
         <div key={note.id ? note.id : index}>
-          <div data-testid="note-title">{note.title}</div>
-          <div data-testid="note-content">
-            <Markdown remarkPlugins={[remarkGfm]}>{note.content}</Markdown>
-          </div>
+          <NoteCard note={note} onDeleteHandler={onDeleteNote} />
         </div>
       ))}
     </div>
