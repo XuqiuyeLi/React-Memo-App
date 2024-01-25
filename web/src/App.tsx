@@ -1,11 +1,10 @@
 import NetworkNoteRepository from './repository/NetworkNoteRepository.ts'
-import NoteListPage from './component/NoteListPage.tsx'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { makeRoutes } from './Routes.tsx'
+import type { Router } from '@remix-run/router'
 
 export default function App() {
   const noteRepo = new NetworkNoteRepository()
-  return (
-    <div>
-      <NoteListPage noteRepo={noteRepo} />
-    </div>
-  )
+  const router: Router = createBrowserRouter(makeRoutes(noteRepo))
+  return <RouterProvider router={router} />
 }

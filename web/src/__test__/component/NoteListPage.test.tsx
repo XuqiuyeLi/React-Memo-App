@@ -1,15 +1,40 @@
-import '@testing-library/jest-dom'
 import { act, render, screen } from '@testing-library/react'
-import { expect, test } from 'vitest'
-import NoteListPage from './NoteListPage.tsx'
+import { expect, vi, test } from 'vitest'
+import NoteListPage from '../../component/NoteListPage.tsx'
 import { userEvent } from '@testing-library/user-event'
 import SpyStubNoteRepo from '../repository/SpyStubNoteRepo.ts'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
+import { Paths } from '../../Paths.tsx'
+
+const mocks = vi.hoisted(() => {
+  return {
+    useNavigate: vi.fn(),
+  }
+})
+vi.mock('react-router-dom', async () => {
+  const mod = await vi.importActual('react-router-dom')
+  return {
+    ...mod,
+    useNavigate: () => mocks.useNavigate,
+  }
+})
 
 describe('NoteListPage', () => {
   let spyStubNoteRepo: SpyStubNoteRepo
 
   async function renderComponent(noteRepo: SpyStubNoteRepo) {
-    await act(async () => render(<NoteListPage noteRepo={noteRepo} />))
+    await act(async () =>
+      render(
+        <MemoryRouter initialEntries={[Paths.Root]}>
+          <Routes>
+            <Route
+              path={Paths.Root}
+              element={<NoteListPage noteRepo={noteRepo} />}
+            />
+          </Routes>
+        </MemoryRouter>
+      )
+    )
   }
 
   beforeEach(() => {
@@ -112,5 +137,34 @@ describe('NoteListPage', () => {
 
     expect(spyStubNoteRepo.deleteNote_was_called).toBeTruthy()
     expect(spyStubNoteRepo.deleteNote_arg_note).toStrictEqual({ id: '1' })
+  })
+
+  test('when update button of a note is clicked, user will be redirected to /notes/update/{id} page', async () => {
+    spyStubNoteRepo.getNotes_return_value = [
+      {
+        __typename: 'Note',
+        id: '1',
+        title: 'Chinese New Year',
+        content: 'Book flight ticket and buy clothes',
+        createdAt: '',
+        updatedAt: '2023/11/20',
+      },
+      {
+        __typename: 'Note',
+        id: '2',
+        title: 'Tennis camp',
+        content: 'Decide a day and book hotel',
+        createdAt: '',
+        updatedAt: '2023/10/31',
+      },
+    ]
+    await renderComponent(spyStubNoteRepo)
+
+    const updateButtons = screen.getAllByRole('button', {
+      name: 'Update',
+    })
+    await userEvent.click(updateButtons[0])
+
+    expect(mocks.useNavigate).toHaveBeenCalledWith('/notes/update/1')
   })
 })

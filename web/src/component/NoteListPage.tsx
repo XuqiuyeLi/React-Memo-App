@@ -1,16 +1,18 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { type CreateNoteInput, Note } from '../API.ts'
+import { useCallback, useEffect, useState } from 'react'
+import { Note } from '../API.ts'
 import { NoteRepository } from '../repository/NetworkNoteRepository.ts'
 import { NoteCard } from './NoteCard.tsx'
+import { FormActions, NoteForm } from './NoteForm.tsx'
+import { Paths } from '../Paths.tsx'
+import { useNavigate } from 'react-router-dom'
 
 interface NoteListPageProps {
   noteRepo: NoteRepository
 }
 
 export default function NoteListPage({ noteRepo }: NoteListPageProps) {
-  const titleRef = useRef<HTMLInputElement | null>(null)
-  const contentRef = useRef<HTMLTextAreaElement | null>(null)
   const [notes, setNotes] = useState<Note[]>([])
+  const navigate = useNavigate()
 
   const getAllNotes = useCallback(async () => {
     await noteRepo
@@ -26,20 +28,6 @@ export default function NoteListPage({ noteRepo }: NoteListPageProps) {
     void getAllNotes()
   }, [getAllNotes])
 
-  async function handleCreateNoteOnSubmit(
-    event: React.FormEvent<HTMLFormElement>
-  ) {
-    event.preventDefault()
-    if (titleRef.current && contentRef.current) {
-      const note: CreateNoteInput = {
-        title: titleRef.current.value,
-        content: contentRef.current.value,
-      }
-      await noteRepo.createNote(note).then().catch()
-      await getAllNotes()
-    }
-  }
-
   function sortNotesByUpdatedAtInDescendingOrder(notes: Note[]) {
     notes.sort((noteA, noteB) => {
       return (
@@ -49,29 +37,49 @@ export default function NoteListPage({ noteRepo }: NoteListPageProps) {
     })
   }
 
-  async function onDeleteNote(note: Note) {
-    if (note.id) {
-      await noteRepo.deleteNote({ id: note.id })
+  const onCreateNote = useCallback(
+    async (note: Partial<Note>) => {
+      await noteRepo.createNote(note)
       await getAllNotes()
-    }
-  }
+    },
+    [noteRepo, getAllNotes]
+  )
+
+  const onDeleteNote = useCallback(
+    async (note: Note) => {
+      if (note.id) {
+        await noteRepo.deleteNote({ id: note.id })
+        await getAllNotes()
+      }
+    },
+    [noteRepo, getAllNotes]
+  )
+
+  const onUpdateNote = useCallback(
+    (note: Note) => {
+      if (note.id) {
+        navigate(Paths.UpdatingNoteById(note.id))
+      }
+    },
+    [navigate]
+  )
 
   return (
     <div className="main">
       <h1>MEMO</h1>
-      <form onSubmit={(event) => void handleCreateNoteOnSubmit(event)}>
-        <input
-          ref={titleRef}
-          aria-label="title"
-          placeholder="Memo Title"
-          type="text"
-        />
-        <textarea ref={contentRef} aria-label="content" placeholder="Content" />
-        <button type="submit">Create Memo</button>
-      </form>
+      <NoteForm
+        note={null}
+        action={FormActions.CREATE}
+        onSubmitHandler={onCreateNote}
+        onResetHandler={() => void {}}
+      />
       {notes.map((note, index) => (
         <div key={note.id ? note.id : index}>
-          <NoteCard note={note} onDeleteHandler={onDeleteNote} />
+          <NoteCard
+            note={note}
+            onUpdateHandler={onUpdateNote}
+            onDeleteHandler={onDeleteNote}
+          />
         </div>
       ))}
     </div>
