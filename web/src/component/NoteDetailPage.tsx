@@ -1,10 +1,11 @@
 import { NoteRepository } from '../repository/NetworkNoteRepository.ts'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 import { Note } from '../API.ts'
-import styles from './NoteCard.module.scss'
 import remarkGfm from 'remark-gfm'
 import Markdown from 'react-markdown'
+import './NoteDetailPage.module.scss'
+import styles from './NoteDetailPage.module.scss'
 
 interface NoteDetailProps {
   noteRepo: NoteRepository
@@ -12,6 +13,7 @@ interface NoteDetailProps {
 export function NoteDetailPage({ noteRepo }: NoteDetailProps) {
   const { noteId } = useParams()
   const [note, setNote] = useState<Note | null | undefined>(undefined)
+  const navigate = useNavigate()
 
   const getNote = useCallback(async () => {
     if (noteId) {
@@ -28,11 +30,17 @@ export function NoteDetailPage({ noteRepo }: NoteDetailProps) {
     void getNote()
   }, [getNote])
 
+  function onBackButton() {
+    navigate('/')
+  }
+
   return (
-    <div>
-      <div>Back to Home</div>
+    <div className={styles.container}>
+      <button className={styles.backButton} onClick={onBackButton}>
+        Back To Home
+      </button>
       {note && (
-        <div>
+        <div className={styles.main}>
           <h1>{note.title}</h1>
           <Markdown className={styles.noteContent} remarkPlugins={[remarkGfm]}>
             {note.content}

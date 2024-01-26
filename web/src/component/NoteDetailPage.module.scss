@@ -1,0 +1,32 @@
+@use '../css/color' as *;
+
+.container {
+  margin-left: 50px;
+}
+
+.backButton {
+  color: $note-800;
+  margin-top: 12px;
+  font-size: 20px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid $note-800;
+
+  &:hover {
+    color: $neutral-200;
+    border-bottom: 2px solid $neutral-200;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.noteContent {
+  input[type='checkbox'] {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
