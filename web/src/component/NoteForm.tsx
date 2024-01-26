@@ -1,5 +1,7 @@
 import { Note } from '../API.ts'
 import React, { useEffect, useRef, useState } from 'react'
+import './NoteForm.module.scss'
+import styles from './NoteForm.module.scss'
 
 export enum FormActions {
   CREATE = 'Create Memo',
@@ -54,6 +56,7 @@ export function NoteForm({
         onReset={onResetHandler}
       >
         <input
+          className={styles.formInput}
           ref={titleRef}
           aria-label="title"
           placeholder="Memo Title"
@@ -61,18 +64,35 @@ export function NoteForm({
           type="text"
         />
         <textarea
+          className={styles.formInput}
+          rows={10}
           ref={contentRef}
           aria-label="content"
           placeholder="Content"
           defaultValue={originalNote?.content}
         />
         {action === FormActions.CREATE && (
-          <button type="submit">{FormActions.CREATE}</button>
+          <button
+            type="submit"
+            className={`${styles.formButton} ${styles.createMemoButton}`}
+          >
+            {FormActions.CREATE}
+          </button>
         )}
         {action === FormActions.UPDATE && (
           <div>
-            <button type="reset">Cancel</button>
-            <button type="submit">{FormActions.UPDATE}</button>
+            <button
+              type="submit"
+              className={`${styles.formButton} ${styles.updateMemoButton}`}
+            >
+              {FormActions.UPDATE}
+            </button>
+            <button
+              type="reset"
+              className={`${styles.formButton} ${styles.cancelButton}`}
+            >
+              Cancel
+            </button>
           </div>
         )}
       </form>

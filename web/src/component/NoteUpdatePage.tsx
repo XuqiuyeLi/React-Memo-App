@@ -54,7 +54,6 @@ export default function NoteUpdatePage({ noteRepo }: NoteUpdateProps) {
 
   return (
     <div>
-      <h1>Update Page!!</h1>
       <NoteForm
         note={note}
         action={FormActions.UPDATE}

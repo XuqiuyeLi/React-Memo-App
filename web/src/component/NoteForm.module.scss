@@ -1,0 +1,60 @@
+@use '../css/color' as *;
+@use '../css/font' as *;
+@use '../css/_mixin' as *;
+
+form {
+  max-width: 420px;
+  margin: 50px auto;
+}
+
+.formInput {
+  font-family: $default-font;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 5px;
+  border: 2px solid $form-primary-color;
+  line-height: 22px;
+  background-color: transparent;
+  transition: all 0.3s;
+  padding: 13px;
+  margin-bottom: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  outline: 0;
+
+  &:focus {
+    border: 2px solid $form-secondary-color;
+  }
+}
+
+input {
+  height: 60px;
+}
+
+textarea {
+  line-height: 150%;
+  resize: vertical;
+}
+
+.formButton {
+  @include buttonStyle;
+}
+
+.createMemoButton,
+.updateMemoButton {
+  background: $form-primary-color;
+  color: $note-100;
+
+  &:hover {
+    background: $form-secondary-color;
+  }
+}
+
+.cancelButton {
+  background: $neutral-100;
+  color: $note-700;
+
+  &:hover {
+    background: $neutral-200;
+  }
+}

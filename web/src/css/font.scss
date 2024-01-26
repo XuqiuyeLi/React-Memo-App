@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-weight: 400;
+  src: url('web/src/fonts/NotoSansJP-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-weight: 700;
+  src: url('web/src/fonts/NotoSansJP-Bold.ttf') format('truetype');
+}
+
+$default-font: 'Noto Sans JP', 'YuGothic', sans-serif;

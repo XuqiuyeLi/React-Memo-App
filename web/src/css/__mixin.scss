@@ -1,0 +1,15 @@
+@use './font' as *;
+
+@mixin buttonStyle {
+  font-family: $default-font;
+  width: 100%;
+  border-radius: 5px;
+  border: 0;
+  cursor: pointer;
+  font-size: 24px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  transition: all 0.3s;
+  font-weight: 700;
+  margin-top: 8px;
+}

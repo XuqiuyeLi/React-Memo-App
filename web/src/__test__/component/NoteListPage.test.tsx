@@ -41,13 +41,6 @@ describe('NoteListPage', () => {
     spyStubNoteRepo = new SpyStubNoteRepo()
   })
 
-  test('renders header', async () => {
-    await renderComponent(spyStubNoteRepo)
-
-    const header = await screen.findByText('MEMO')
-    expect(header).toBeInTheDocument()
-  })
-
   test('user can input title and content to create a note', async () => {
     await renderComponent(spyStubNoteRepo)
 
@@ -166,5 +159,34 @@ describe('NoteListPage', () => {
     await userEvent.click(updateButtons[0])
 
     expect(mocks.useNavigate).toHaveBeenCalledWith('/notes/update/1')
+  })
+
+  test('when a note is clicked, user will be redirected to /notes/{id} page', async () => {
+    spyStubNoteRepo.getNotes_return_value = [
+      {
+        __typename: 'Note',
+        id: '1',
+        title: 'Chinese New Year',
+        content: 'Book flight ticket and buy clothes',
+        createdAt: '',
+        updatedAt: '2023/11/20',
+      },
+      {
+        __typename: 'Note',
+        id: '2',
+        title: 'Tennis camp',
+        content: 'Decide a day and book hotel',
+        createdAt: '',
+        updatedAt: '2023/10/31',
+      },
+    ]
+    await renderComponent(spyStubNoteRepo)
+
+    const detailButtons = screen.getAllByRole('button', {
+      name: 'See More Details',
+    })
+    await userEvent.click(detailButtons[1])
+
+    expect(mocks.useNavigate).toHaveBeenCalledWith('/notes/2')
   })
 })

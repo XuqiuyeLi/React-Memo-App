@@ -5,6 +5,8 @@ import { NoteCard } from './NoteCard.tsx'
 import { FormActions, NoteForm } from './NoteForm.tsx'
 import { Paths } from '../Paths.tsx'
 import { useNavigate } from 'react-router-dom'
+import './NoteListPage.module.scss'
+import styles from './NoteListPage.module.scss'
 
 interface NoteListPageProps {
   noteRepo: NoteRepository
@@ -64,24 +66,35 @@ export default function NoteListPage({ noteRepo }: NoteListPageProps) {
     [navigate]
   )
 
+  const onNoteDetail = useCallback(
+    (note: Note) => {
+      if (note.id) {
+        navigate(Paths.NoteDetailById(note.id))
+      }
+    },
+    [navigate]
+  )
+
   return (
-    <div className="main">
-      <h1>MEMO</h1>
+    <div className={styles.mainContainer}>
       <NoteForm
         note={null}
         action={FormActions.CREATE}
         onSubmitHandler={onCreateNote}
         onResetHandler={() => void {}}
       />
-      {notes.map((note, index) => (
-        <div key={note.id ? note.id : index}>
-          <NoteCard
-            note={note}
-            onUpdateHandler={onUpdateNote}
-            onDeleteHandler={onDeleteNote}
-          />
-        </div>
-      ))}
+      <section className={styles.notesSection}>
+        {notes.map((note, index) => (
+          <div key={note.id ? note.id : index}>
+            <NoteCard
+              note={note}
+              onUpdateHandler={onUpdateNote}
+              onDeleteHandler={onDeleteNote}
+              onDetailHandler={onNoteDetail}
+            />
+          </div>
+        ))}
+      </section>
     </div>
   )
 }

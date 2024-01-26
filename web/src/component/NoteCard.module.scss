@@ -1,0 +1,80 @@
+@use '../css/color' as *;
+@use '../css/font' as *;
+@use '../css/_mixin' as *;
+
+.noteCard {
+  max-width: 500px;
+  background: $color_white;
+  display: flex;
+  flex-direction: row;
+  box-shadow: 0 3px 7px -1px rgba(#000, 0.1);
+  margin: 24px auto 1.6%;
+  line-height: 1.4;
+  border-radius: 5px;
+  overflow: hidden;
+  padding: 30px;
+}
+
+.description {
+  flex-basis: 80%;
+  height: 300px;
+  width: 600px;
+}
+
+.noteTitle {
+  position: relative;
+  font-size: 20px;
+  font-family: $default-font;
+  font-weight: bold;
+  color: $form-primary-color;
+}
+
+.noteContent {
+  position: relative;
+  input[type='checkbox'] {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.cardActionButtons {
+  flex-basis: 20%;
+  margin-left: 16px;
+  max-width: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.noteCardButton {
+  @include buttonStyle;
+  width: 100%;
+  font-size: 12px;
+
+  background: $note-600;
+  color: $note-200;
+
+  &:hover {
+    background: $note-400;
+    color: $note-900;
+  }
+}
+
+.detailButton {
+  @include buttonStyle;
+  width: 100%;
+  font-size: 12px;
+  margin-top: 24px;
+
+  &:hover {
+    background: $color_coral;
+    color: $note-800;
+  }
+}
+
+@media (max-width: 640px) {
+  .description {
+    width: 300px;
+  }
+}

@@ -1,0 +1,18 @@
+@use '../css/color' as *;
+
+header {
+  background-color: $neutral-200;
+  color: $note-100;
+  text-align: center;
+  padding: 20px 0 30px;
+
+  h1 {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 65px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    line-height: 0.8;
+    padding-top: 10px;
+  }
+}

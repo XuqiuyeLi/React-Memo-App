@@ -1,0 +1,16 @@
+@use './css/color' as *;
+@use './css/font' as *;
+
+html {
+  color: $primary-font-color;
+  font-family: $default-font;
+  font-weight: normal;
+  background-color: $primary-background-100;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  line-height: 1.5;
+  touch-action: pan-y;
+  margin: 0;
+}

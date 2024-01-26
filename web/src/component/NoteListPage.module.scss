@@ -1,0 +1,13 @@
+@use '../css/color' as *;
+
+.mainContainer {
+  background-color: $primary-background-100;
+}
+
+.notesSection {
+  background: $neutral-100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
