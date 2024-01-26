@@ -12,7 +12,6 @@ First, clone this repository:
 <!-- start:code block -->
 ```
 git clone https://github.com/XuqiuyeLi/React-Memo-App.git
-cd web
 ```
 
 Install dependencies:
