@@ -50,6 +50,3 @@ npm run dev
 
 Open http://localhost:5173/ in your browser, now you can create, edit, delete notes!
 <!-- end:code block -->
-
-## Check out the app at the deployed url
-I have deployed the app to AWS amplify, you can also check it out [here](https://dev.dgrsuqxox7tct.amplifyapp.com)
