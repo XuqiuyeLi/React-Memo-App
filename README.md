@@ -35,13 +35,10 @@ You can follow the article [here](https://docs.amplify.aws/javascript/tools/cli/
 
 ### Set up amplify backend locally
 ```
-amplify pull --appId dgrsuqxox7tct --envName dev
+amplify pull --appId <your-app-id> --envName dev
 
 # use the AWS Amplify user credentials you set up when configuring with Amplify CLI to access the backend
 ```
-Here is a sample what result should look like when using AWS access key to pull the app:
-
-![Amplify](images/amplify_setup.jpg)
 
 ### Run the app
 ```
